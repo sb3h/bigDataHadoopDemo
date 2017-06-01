@@ -1,0 +1,25 @@
+apply plugin: "java"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile fileTree(include: '*.jar', dir: 'libs')
+    compile "$hadoop_client"
+    compile "$hadoop_yarn_client"
+    compile "$hadoop_mapreduce_client_app"
+
+    compile "$hadoop_common_test"
+    //假如运行local模式，一定要加上这个，不然会出错的，因为版本问题
+    configurations.all {
+        resolutionStrategy {
+            forcedModules = ['com.google.guava:guava:11.0.2']
+        }
+    }
+    testCompile junit
+}
+
+
+
+
+

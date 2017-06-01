@@ -1,0 +1,15 @@
+apply plugin: "java"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+dependencies {
+    compile fileTree(include: '*.jar', dir: 'libs')
+    compile project(":00tools")
+}
+
+
+
+
+

@@ -1,0 +1,43 @@
+ext {
+    javaV = "1.8"
+    scalaV = "2.11"
+    hadoopV = "2.6.0"
+    sparkV = "2.0.1"
+    kafkaV = "0.8.2.2"
+    hiveV = "1.2.1"
+    deps = [
+            scala = "org.scala-lang:scala-library:$scalaV",
+
+            hadoop_client = "org.apache.hadoop:hadoop-client:$hadoopV",
+            hadoop_yarn_client = "org.apache.hadoop:hadoop-yarn-client:$hadoopV",
+            hadoop_mapreduce_client_app = "org.apache.hadoop:hadoop-mapreduce-client-app:$hadoopV",
+
+            hadoop_common_test = "org.apache.hadoop:hadoop-common-test:+",
+
+            //bigData
+            spark_streaming_kafka = "org.apache.spark:spark-streaming-kafka-0-8_$scalaV:$sparkV",
+            spark_streaming = "org.apache.spark:spark-streaming_$scalaV:$sparkV",
+            spark_core = "org.apache.spark:spark-core_$scalaV:$sparkV",
+            spark_sql = "org.apache.spark:spark-sql_$scalaV:$sparkV",
+            spark_hive = "org.apache.spark:spark-hive_$scalaV:$sparkV",
+
+            //hive
+            hive = "org.apache.hive:hive:$hiveV",
+            hiveCli = "org.apache.hive:hive-cli:$hiveV",
+            hiveJdbc = "org.apache.hive:hive-jdbc:$hiveV",
+
+            //memory db
+            redis_clients = "redis.clients:jedis:+",
+
+            //Json parser
+            gson = "com.google.code.gson:gson:2.2.4",
+            //commons apache
+            commons_collections = "commons-collections:commons-collections:3.2.2",
+
+            //db connection
+            mysql = "mysql:mysql-connector-java:5.+",
+
+            //test
+            junit = "junit:junit:4.12"
+    ]
+}
