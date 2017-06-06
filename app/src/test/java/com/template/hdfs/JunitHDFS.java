@@ -23,8 +23,14 @@ public class JunitHDFS {
     }
 
     @Test
-    public void testRun() throws IOException {
-
+    public void testPrintRootFile() throws IOException {
+        RemoteIterator<LocatedFileStatus> itor = fs.listFiles(new Path("/user"), true);
+        while (itor.hasNext()) {
+            LocatedFileStatus fileStatus = itor.next();
+            String name = fileStatus.getPath().getName();
+            System.out.println(fileStatus.getPath().getParent());
+//            System.out.println(name);
+        }
     }
 
     @After
