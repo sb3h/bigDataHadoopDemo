@@ -15,19 +15,21 @@
 -->
 
 <!-- Put site-specific property overrides in this file. -->
-
 <configuration>
-<property>
-<name>fs.defaultFS</name>
-<value>hdfs://master-node:9000</value>
-</property>
-<property>
-<name>dfs.permissions</name>
-<value>false</value>
-</property>
-    <!--
-<property>
-<name>hadoop.tmp.dir</name>
-<value>/export/data/hadoop/tmp</value>
-</property>-->
+    <!-- 指定hdfs的nameservice为package -->
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://ns</value>
+    </property>
+    <!-- 指定hadoop临时目录 -->
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>/export/data/hadoop</value>
+    </property>
+
+    <!-- 指定zookeeper地址 -->
+    <property>
+        <name>ha.zookeeper.quorum</name>
+        <value>zk01:2181,zk02:2181,zk03:2181</value>
+    </property>
 </configuration>

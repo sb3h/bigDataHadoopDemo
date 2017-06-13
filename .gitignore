@@ -36,3 +36,7 @@ jniLibs
 build
 local.properties
 reports
+
+#log
+*.log
+log

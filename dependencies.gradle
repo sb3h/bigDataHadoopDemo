@@ -5,6 +5,7 @@ ext {
     sparkV = "2.0.1"
     kafkaV = "0.8.2.2"
     hiveV = "1.2.1"
+    hbaseV = "1.2.1"
     deps = [
             scala = "org.scala-lang:scala-library:$scalaV",
 
@@ -25,6 +26,8 @@ ext {
             hive = "org.apache.hive:hive:$hiveV",
             hiveCli = "org.apache.hive:hive-cli:$hiveV",
             hiveJdbc = "org.apache.hive:hive-jdbc:$hiveV",
+
+            hbase_client = "org.apache.hbase:hbase-client:$hbaseV",
 
             //memory db
             redis_clients = "redis.clients:jedis:+",
