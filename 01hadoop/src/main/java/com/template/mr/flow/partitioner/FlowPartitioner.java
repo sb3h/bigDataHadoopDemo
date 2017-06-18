@@ -1,4 +1,4 @@
-package com.template.mr.wc.flow.partitioner;
+package com.template.mr.flow.partitioner;
 
 import org.apache.hadoop.mapreduce.Partitioner;
 

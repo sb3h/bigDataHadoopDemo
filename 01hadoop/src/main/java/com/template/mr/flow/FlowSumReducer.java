@@ -1,8 +1,7 @@
-package com.template.mr.wc.flow;
+package com.template.mr.flow;
 
 
-import com.template.mr.wc.flow.bean.FlowBean;
-import org.apache.hadoop.io.LongWritable;
+import com.template.mr.flow.bean.FlowBean;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 

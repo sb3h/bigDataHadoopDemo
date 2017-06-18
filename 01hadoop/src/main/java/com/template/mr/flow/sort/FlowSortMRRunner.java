@@ -1,7 +1,7 @@
-package com.template.mr.wc.flow.sort;
+package com.template.mr.flow.sort;
 
 
-import com.template.mr.wc.flow.bean.FlowBean;
+import com.template.mr.flow.bean.FlowBean;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;

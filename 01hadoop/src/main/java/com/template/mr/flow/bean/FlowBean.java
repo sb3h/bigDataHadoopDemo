@@ -1,4 +1,4 @@
-package com.template.mr.wc.flow.bean;
+package com.template.mr.flow.bean;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.io.WritableComparable;
