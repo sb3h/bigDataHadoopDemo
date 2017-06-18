@@ -10,6 +10,19 @@ dependencies {
 }
 
 
+sourceSets {
+    main {
+        resources {
+            srcDir '../00tools/src/resources'
+        }
+    }
+    test {
+        resources {
+            srcDir '../00tools/src/resources'
+        }
+    }
+}
+
 
 
 
