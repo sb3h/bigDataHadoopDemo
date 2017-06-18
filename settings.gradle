@@ -1,3 +1,3 @@
 include ':00tools'
-//include ':01hadoop'
-include ':02hbase'
+include ':01hadoop'
+//include ':02hbase'

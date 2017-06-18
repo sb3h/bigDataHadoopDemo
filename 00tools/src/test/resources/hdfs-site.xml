@@ -20,15 +20,19 @@
         <value>package:50070</value>
     </property>
     <!-- nn2的RPC通信地址 -->
-    <property>
+<!---->
+         <property>
         <name>dfs.namenode.rpc-address.ns.nn2</name>
         <value>master-node:9000</value>
     </property>
+<!---->
     <!-- nn2的http通信地址 -->
+<!---->
     <property>
         <name>dfs.namenode.http-address.ns.nn2</name>
         <value>master-node:50070</value>
     </property>
+<!---->
     <!-- 指定NameNode的元数据在JournalNode上的存放位置 -->
     <property>
         <name>dfs.namenode.shared.edits.dir</name>
