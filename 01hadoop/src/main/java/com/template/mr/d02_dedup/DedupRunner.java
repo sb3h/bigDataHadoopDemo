@@ -1,9 +1,6 @@
-package com.template.mr.d01_dedup;
+package com.template.mr.d02_dedup;
 
 
-import com.template.mr.flow.FlowSumMapper;
-import com.template.mr.flow.FlowSumReducer;
-import com.template.mr.flow.bean.FlowBean;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
