@@ -1,0 +1,32 @@
+Hadoop 案例5-----求最大最小值问题：SELECT MAX(NUMBER),MIN(NUMBER) FROM TABLE 获取某列的最大值和最小值
+
+1、数据准备
+[root@x00 hd]# cat eightteen_a.txt
+102
+10
+39
+109
+200
+11
+3
+90
+28
+[root@x00 hd]# cat eightteen_b.txt
+5
+2
+30
+838
+10005
+
+结果预测
+Max 10005
+Min 2
+
+
+
+收获
+    M直接把值输出给R，再把值进行遍历比较。
+    或者
+    在M用集合记录，最后在clean输出最后一个数（看每次map的数据量多大，如果很小，就没有必要这样做）
+
+    

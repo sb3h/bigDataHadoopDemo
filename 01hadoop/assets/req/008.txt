@@ -1,0 +1,45 @@
+----Hadoop 实例8  Join讲解1: 获取员工所在部门信息，输出格式要求：员工编号，员工姓名，部门名称，部门编号
+
+1、原始数据
+员工数据
+empno	ename	job	        mgr	hiredate	sal	comm	deptno	loc
+7499	allen	salesman	7698	1981-02-20	1600	300	30
+7782	clark	managers	7639	1981-06-09	2450		10
+7654	martin	salesman	7698	1981-03-20	1250	1400	30	boston
+7900	james	clerk	7698	1981-01-09	950		30
+7788	scott	analyst	7566	1981-09-01	3000	100	20
+
+部门数据
+deptno	dname	loc
+30	sales	chicago
+20	research	dallas
+10	accounting	newyork
+
+2、实现的功能类似于
+select e.empno,e.ename,d.dname,d.deptno from emp e join dept d on e.deptno=d.deptno;
+
+key: deptno
+第一种思路：
+Text：empno_ename_0/deptno_dname_1;
+
+第二种思路：
+Consume bean: empno/ename/deptno/dname/flag
+
+
+
+3、处理join的思路：
+       将Join key 当作map的输出key, 也就是reduce的输入key ,  这样只要join的key相同，shuffle过后，就会进入到同一个reduce 的key - value list 中去。
+       需要为join的2张表设计一个通用的一个bean.  并且bean中加一个flag的标志属性，这样可以根据flag来区分是哪张表的数据。
+       reduce 阶段根据flag来判断是员工数据还是部门数据就很容易了 。而join的真正处理是在reduce阶段。
+
+4、实现中间bean
+	存储数据的bean  (由于数据要在网络上传输必须序列化，hadoop处理的时候需要分组和排序，所以要实现WritableComparable接口):
+
+
+
+收获
+    分区处理（在m前，就已经处理好分区，在m时进行设置部门）
+    在R再把depno和员工的depno进行匹配汇总（部门名字，在R在进行处理）
+
+
+    

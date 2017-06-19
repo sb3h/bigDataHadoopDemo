@@ -85,7 +85,7 @@ public class SortByTemperatureUsingTotalOrderPartitionRunner extends Configured 
         protected void reduce(IntWritable key, Iterable<Text> values,Context context)
                 throws IOException, InterruptedException {
 
-            for(Text val:values){//之所以要遍历，避免有重复的数据没有进行排序，
+            for(Text val:values){//之所以要遍历，避免有重复的数据没有进行排序
                 context.write(num, key);
                 num = new IntWritable(num.get()+1);
             }
