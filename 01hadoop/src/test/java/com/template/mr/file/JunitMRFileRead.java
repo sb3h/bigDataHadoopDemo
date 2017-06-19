@@ -42,17 +42,20 @@ public class JunitMRFileRead {
 
 
     @Test
-    public void testSequenceFileWriteFileBlock() throws IOException {
-        String outDirStr = String.format("%s/data/SequenceFileBlock", HDFS_NS);
-        Path outDirPath = new Path(outDirStr);
+    public void testSequenceFileReadFile() throws IOException {
+        String inDirStr = String.format("%s/data/SequenceFile", HDFS_NS);
+        Path inDirPath = new Path(inDirStr);
 
-        SequenceFile.Writer writer = SequenceFile.createWriter(fs,conf,outDirPath,key.getClass(),value.getClass());
-        mWriter = writer;
+        SequenceFile.Reader reader = new SequenceFile.Reader(fs,inDirPath,conf);
 
-        for (int i = 0; i < 50000; i++) {
-            ((IntWritable)key).set(50000-i);
-            ((Text)value).set(myVal[i%myVal.length]);
-            writer.append(key,value);
+        key = (WritableComparable)ReflectionUtils.newInstance(reader.getKeyClass(),conf);
+        value = (WritableComparable)ReflectionUtils.newInstance(reader.getValueClass(),conf);
+
+        long position = reader.getPosition();
+
+        while (reader.next(key,value)){
+            System.out.println(String.format("[%s-%s]%s %s",position,reader.syncSeen(),key,value));
+            position = reader.getPosition();
         }
     }
 

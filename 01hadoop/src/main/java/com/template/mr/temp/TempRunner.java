@@ -22,6 +22,9 @@ import java.util.UUID;
  * job提交标准写法
  */
 public class TempRunner extends Configured implements Tool {
+
+    public static final String demoPath = "temp";
+
     public static void main(String[] args) throws Exception {
 //        ToolRunner tool = new ToolRunner();
 //        tool.run(new DedupRunner(),args);
@@ -39,6 +42,7 @@ public class TempRunner extends Configured implements Tool {
 
         job.setJarByClass(TempRunner.class);
         job.setMapperClass(MMapper.class);
+        job.setCombinerClass(MReducer.class);
         job.setReducerClass(MReducer.class);
 
 //        如果map输出类型与reduce一样,可以不写map的
@@ -49,11 +53,11 @@ public class TempRunner extends Configured implements Tool {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 //        hdfs dfs -cat /test/mr/input/dedup/*
-        FileInputFormat.setInputPaths(job, new Path("hdfs://ns/test/mr/input/dedup/*"));
+        FileInputFormat.setInputPaths(job, new Path(String.format("hdfs://ns/test/mr/input/%s/*",demoPath)));
 
 //        hdfs dfs -rm -r /test/mr/output/dedup/*
         //hdfs dfs -cat /test/mr/output/dedup/*/*
-        FileOutputFormat.setOutputPath(job, new Path(String.format("hdfs://ns/test/mr/output/dedup/%s", UUID.randomUUID())));
+        FileOutputFormat.setOutputPath(job, new Path(String.format("hdfs://ns/test/mr/output/%s/%s",demoPath, UUID.randomUUID())));
 
 
         return job.waitForCompletion(true) ? 0 : 1;

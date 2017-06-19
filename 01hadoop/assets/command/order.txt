@@ -1,0 +1,9 @@
+hdfs dfs -rm -r /test/mr/input/order*
+hdfs dfs -rm -r /test/mr/output/order*
+
+hdfs dfs -text /test/mr/input/order_seq
+hdfs dfs -rm -r /test/mr/input/order_seq
+
+hdfs dfs -put order/ /test/mr/input
+
+hdfs dfs -text /test/mr/input/order/*

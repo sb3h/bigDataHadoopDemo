@@ -12,6 +12,7 @@ ext {
             hadoop_client = "org.apache.hadoop:hadoop-client:$hadoopV",
             hadoop_yarn_client = "org.apache.hadoop:hadoop-yarn-client:$hadoopV",
             hadoop_mapreduce_client_app = "org.apache.hadoop:hadoop-mapreduce-client-app:$hadoopV",
+            hadoop_mapreduce_examples = "org.apache.hadoop:hadoop-mapreduce-examples:$hadoopV",
 
             hadoop_common_test = "org.apache.hadoop:hadoop-common-test:+",
 
