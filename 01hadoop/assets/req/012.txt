@@ -1,0 +1,132 @@
+Hadoop 案例12----自连接问题
+
+1、需求分析
+实例中给出child-parent（孩子——父母）表，要求输出grandchild-grandparent（孙子——爷奶）表。
+2、原始数据
+file：
+
+
+
+    child		parent
+
+Tom	Lucy
+
+Tom	Jack
+
+Jone	Lucy
+
+Jone	Jack
+
+Lucy	Mary
+
+Lucy	Ben
+
+Jack	Alice
+
+Jack	Jesse
+
+Terry	Alice
+
+Terry	Jesse
+
+Philip	Terry
+
+Philip	Alma
+
+Mark	Terry
+
+Mark	Alma
+
+
+
+
+    样例输出如下所示。
+
+    file：
+
+
+
+    grandchild		grandparent
+
+    Tom		    　　Alice
+
+    Tom		    　　Jesse
+
+    Jone		    　　Alice
+
+    Jone		   　　 Jesse
+
+    Tom		    　　Mary
+
+    Tom		    　　Ben
+
+    Jone		   　　 Mary
+
+    Jone		   　　 Ben
+
+    Philip		  　　  Alice
+
+    Philip		    　　Jesse
+
+    Mark		   　　 Alice
+
+    Mark		   　　 Jesse
+
+
+3、设计思路分析
+	分析这个实例，显然需要进行单表连接，连接的是左表的parent列和右表的child列，且左表和右表是同一个表。
+
+	连接结果中除去连接的两列就是所需要的结果——"grandchild--grandparent"表。要用MapReduce解决这个实例，
+	首先应该考虑如何实现表的自连接；
+	其次就是连接列的设置；
+	最后是结果的整理。
+
+		考虑到MapReduce的shuffle过程会将相同的key会连接在一起，所以可以将map结果的key设置成待连接的列，然后列中相同的值就自然会连接在一起了。
+	再与最开始的分析联系起来：
+
+	要连接的是左表的parent列和右表的child列，且左表和右表是同一个表，所以在map阶段将读入数据分割成child和parent之后，会将parent设置成key，
+	child设置成value进行输出，并作为左表；再将同一对child和parent中的child设置成key，parent设置成value进行输出，作为右表。为了区分输出中的左右表，
+	需要在输出的value中再加上左右表的信息，比如在value的String最开始处加上字符1表示左表，加上字符2表示右表。这样在map的结果中就形成了左表和右表，
+	然后在shuffle过程中完成连接。reduce接收到连接的结果，其中每个key的value-list就包含了"grandchild--grandparent"关系。取出每个key的value-list进行解析，
+	将左表中的child放入一个数组，右表中的parent放入一个数组，然后对两个数组求笛卡尔积就是最后的结果了。
+
+sql
+	insert into t_relation(c_child,c_parent) values("Tom" ,"Jack");
+    insert into t_relation(c_child,c_parent) values("Jone" ,"Lucy");
+    insert into t_relation(c_child,c_parent) values("Jone" ,"Jack");
+    insert into t_relation(c_child,c_parent) values("Lucy" ,"Mary");
+    insert into t_relation(c_child,c_parent) values("Lucy" ,"Ben");
+    insert into t_relation(c_child,c_parent) values("Jack" ,"Alice");
+    insert into t_relation(c_child,c_parent) values("Jack" ,"Jesse");
+    insert into t_relation(c_child,c_parent) values("Terry" ,"Alice");
+    insert into t_relation(c_child,c_parent) values("Terry" ,"Jesse");
+    insert into t_relation(c_child,c_parent) values("Philip" ,"Terry");
+    insert into t_relation(c_child,c_parent) values("Philip" ,"Alma");
+    insert into t_relation(c_child,c_parent) values("Mark" ,"Terry");
+    insert into t_relation(c_child,c_parent) values("Mark" ,"Alma");
+
+    --自连接
+    SELECT r1.* FROM t_relation r1,t_relation r2 where r1.c_child=r2.c_parent;
+    SELECT * FROM t_relation r1;
+    --带参数
+    SELECT r1.c_child FROM t_relation r1,t_relation r2 where r1.c_child=r2.c_parent and r1.c_child = 'Jack'group by r1.c_child;
+    --不带参数
+    SELECT r1.c_child FROM t_relation r1,t_relation r2 where r1.c_child=r2.c_parent  group by r1.c_child;
+    --查有爷爷和奶奶的人
+    select c_child from t_relation where c_parent in
+    (
+    SELECT r1.c_child FROM t_relation r1,t_relation r2 where r1.c_child=r2.c_parent  group by r1.c_child
+    ) group by c_child
+    ;
+
+    SELECT count(r1.c_child) FROM t_relation r1,t_relation r2 where r1.c_child=r2.c_parent and r1.c_child = 'Jack';
+
+收获
+
+
+
+
+
+
+
+    

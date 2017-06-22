@@ -27,13 +27,13 @@ public class TempRunner extends Configured implements Tool {
 
     public static void main(String[] args) throws Exception {
 //        ToolRunner tool = new ToolRunner();
-//        tool.run(new DedupRunner(),args);
+//        tool.run(new tempRunner(),args);
         int run = ToolRunner.run(new TempRunner(), args);
         System.exit(run);
 //        System.out.println(run);
     }
 
-    //hdfs dfs -put file1 file2 /test/mr/input/dedup
+    //hdfs dfs -put file1 file2 /test/mr/input/temp
 
     @Override
     public int run(String[] args) throws Exception {
@@ -41,23 +41,24 @@ public class TempRunner extends Configured implements Tool {
         Job job = Job.getInstance(conf);
 
         job.setJarByClass(TempRunner.class);
+
+
         job.setMapperClass(MMapper.class);
-        job.setCombinerClass(MReducer.class);
-        job.setReducerClass(MReducer.class);
-
 //        如果map输出类型与reduce一样,可以不写map的
-//        job.setMapOutputKeyClass(Text.class);
+        job.setMapOutputKeyClass(Text.class);
 //        //如果你的输出类型写错。你的reduce不会跑进去的
-//        job.setMapOutputValueClass(FlowBean.class);
+        job.setMapOutputValueClass(Text.class);
+//        hdfs dfs -cat /test/mr/input/temp/*
+        FileInputFormat.setInputPaths(job, new Path(String.format("hdfs://ns/test/mr/input/%s/*", demoPath)));
 
+        job.setCombinerClass(MReducer.class);
+
+        job.setReducerClass(MReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
-//        hdfs dfs -cat /test/mr/input/dedup/*
-        FileInputFormat.setInputPaths(job, new Path(String.format("hdfs://ns/test/mr/input/%s/*",demoPath)));
-
-//        hdfs dfs -rm -r /test/mr/output/dedup/*
-        //hdfs dfs -cat /test/mr/output/dedup/*/*
-        FileOutputFormat.setOutputPath(job, new Path(String.format("hdfs://ns/test/mr/output/%s/%s",demoPath, UUID.randomUUID())));
+//        hdfs dfs -rm -r /test/mr/output/temp/*
+        //hdfs dfs -cat /test/mr/output/temp/*/*
+        FileOutputFormat.setOutputPath(job, new Path(String.format("hdfs://ns/test/mr/output/%s/%s", demoPath, UUID.randomUUID())));
 
 
         return job.waitForCompletion(true) ? 0 : 1;
@@ -67,14 +68,14 @@ public class TempRunner extends Configured implements Tool {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 //            String line = value.toString();
-            context.write(value,new Text());
+            context.write(value, new Text());
         }
     }
 
-    private static class MReducer extends Reducer<Text,Text,Text,Text> {
+    private static class MReducer extends Reducer<Text, Text, Text, Text> {
         @Override
         protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-            context.write(key,new Text(""));
+            context.write(key, new Text(""));
         }
     }
 }

@@ -1,0 +1,55 @@
+----Hadoop 实例10  Join讲解3: 将人员的地址ID完善成为地址名称，输出格式要求：人员Id，姓名，地址 ----优化方案
+
+1、原始数据
+	人员ID 人员名称 地址ID
+	1 张三 1
+	2 李四 2
+	3 王五 1
+	4 赵六 3
+	5 马七 3
+
+	另外一组为地址信息:
+	地址ID 地址名称
+	1 北京
+	2 上海
+	3 广州
+
+2、处理说明
+	该处理接着上一讲，我们对这个实现进行了总结,最主要的问题就是实现的可扩展性,由于在reduce端我们通过一个List数据结构保存了所有的某个外键的对应的所有人员信息,
+	而List的最大值为Integer.MAX_VALUE,所以 在数据量巨大的时候,会造成List越界的错误.所以对这个实现的优化显得很有必要.
+3、优化说明
+	结合第一种实现方式,我们看到第一种方式最需要改进的地方就是如果对于某个地址ID的迭代器values,如果values的第一个元素是地址信息的话,
+	那么,我们就不需要缓存所有的人员信息了.如果第一个元素是地址信息,我们读出地址信息后,后来就全部是人员信息,那么就可以将人员的地址置为相应的地址.
+
+	现在我们回头看看mapreduce的partition和shuffle的过程,partitioner的主要功能是根据reduce的数量将map输出 的结果进行分块,将数据送入到相应的reducer,
+	所有的partitioner都必须实现Partitioner接口并实现getPartition 方法,该方法的返回值为int类型,并且取值范围在0-numOfReducer-1,
+	从而能够将map的输出输入到相应的reducer中,对于某个 mapreduce过程,Hadoop框架定义了默认的partitioner为HashPartition,
+	该Partitioner使用key的 hashCode来决定将该key输送到哪个reducer;shuffle将每个partitioner输出的结果根据key进行group以及排序,
+	将具有相同key的value构成一个valeus的迭代器,并根据key进行排序分别调用开发者定义的reduce方法进行归并.
+	从shuffle的过 程我们可以看出key之间需要进行比较,通过比较才能知道某两个key是否相等或者进行排序,
+	因此mapduce的所有的key必须实现 comparable接口的compareto()方法从而实现两个key对象之间的比较.
+
+	回到我们的问题,我们想要的是将地址信息在排序的过程中排到最前面,前面我们只通过locId进行比较的方法就不够用了,
+	因为其无法标识出是地址表中的数据 还是人员表中的数据.因此,我们需要实现自己定义的Key数据结构,完成在想共同locId的情况下地址表更小的需求.
+	由于map的中间结果需要写到磁盘 上,因此必须实现writable接口.具体实现如下:
+
+收获
+    依靠MR-GroupingComparatorClass进行关联，优化了某个reduce的数据
+    mapduce的所有的key必须实现 comparable接口的compareto()方法从而实现两个key对象之间的比较.
+    经过UserKey的次数？
+        M阶段--倒序取最后一个逐个比较（简单选择排序： 比较次数没有多少之分，均是n(n-1)/2;）(不可重复的)
+            根据key的次数
+                经过UserKey的时机？（在每一个切片map完之后，map-cleanup之前）
+        R阶段--(n(n+1)/2)-----（1 3 6 10 15 21 28百度这堆数）至于为何，真不知道
+            根据reduce的次数（分区数）
+                经过UserKey的时机？（reduce-setup之前）
+    GroupingComparatorClass运行时机（判断reduce下一次的key是否相同，如果相同就继续把下一条数据读入，把下一次的reduce标记为已处理）
+        //详解http://www.linuxidc.com/Linux/2013-08/88603.htm
+        每次reduce之前和最后一次reduce之后
+
+
+
+
+
+
+    

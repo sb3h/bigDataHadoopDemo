@@ -8,6 +8,7 @@ dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
     compile project(":00tools")
     compile "$hadoop_mapreduce_examples"
+    compile "$hadoop_datajoin"
 }
 
 sourceSets {
