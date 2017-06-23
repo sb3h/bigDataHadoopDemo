@@ -14,12 +14,12 @@ dependencies {
 sourceSets {
     main {
         resources {
-            srcDir '../00tools/src/resources'
+            srcDir '../00tools/src/main/resources'
         }
     }
     test {
         resources {
-            srcDir '../00tools/src/resources'
+            srcDir '../00tools/src/main/resources'
         }
     }
 }

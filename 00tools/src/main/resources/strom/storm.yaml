@@ -1,0 +1,6 @@
+ storm.zookeeper.servers:
+     - "zk01"
+     - "zk02"
+     - "zk03"
+ nimbus.host: "zk01"
+ storm.local.dir : "/tmp/storm"

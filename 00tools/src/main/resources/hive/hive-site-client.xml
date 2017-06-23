@@ -1,0 +1,22 @@
+<?xml version="1.0"?>  
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>  
+<configuration> 
+<property>
+  <name>hive.metastore.warehouse.dir</name>
+  <value>/user/hive_remote/warehouse</value>
+</property>
+
+<property>
+  <name>hive.metastore.local</name>
+  <value>false</value>
+</property>
+
+<property>
+  <name>hive.metastore.uris</name>
+  <value>thrift://192.168.101.121:9083</value>
+</property>  
+
+
+
+
+</configuration>

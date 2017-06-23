@@ -30,6 +30,8 @@ ext {
             hiveJdbc = "org.apache.hive:hive-jdbc:$hiveV",
 
             hbase_client = "org.apache.hbase:hbase-client:$hbaseV",
+            hbase_examples = "org.apache.hbase:hbase-examples:$hbaseV",
+            hbase_testing_util = "org.apache.hbase:hbase-testing-util:$hbaseV",
 
             //memory db
             redis_clients = "redis.clients:jedis:+",

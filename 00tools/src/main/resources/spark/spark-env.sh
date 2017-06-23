@@ -1,0 +1,3 @@
+JAVA_HOME=/export/soft/jdk
+SPARK_MASTER_HOST=master-node
+SPARK_MASTER_WEBUI_PORT=8079
